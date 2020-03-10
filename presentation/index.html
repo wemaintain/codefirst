@@ -1,0 +1,684 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <script type="text/javascript">
+        /**
+ * Highlight.js GraphQL syntax highlighting definition
+ *
+ * @see https://github.com/isagalaev/highlight.js
+ *
+ * @package: highlightjs-graphql
+ * @author:  David Peek <mail@dpeek.com>
+ */
+
+function hljsDefineGraphQL(hljs) {
+  return {
+    aliases: ["gql"],
+    keywords: {
+      keyword:
+        "query mutation subscription|10 type interface union scalar fragment|10 enum on ...",
+      literal: "true false null"
+    },
+    contains: [
+      hljs.HASH_COMMENT_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.NUMBER_MODE,
+      {
+        className: "type",
+        begin: "[^\\w][A-Z][a-z]",
+        end: "\\W",
+        excludeEnd: true
+      },
+      {
+        className: "literal",
+        begin: "[^\\w][A-Z][A-Z]",
+        end: "\\W",
+        excludeEnd: true
+      },
+      { className: "variable", begin: "\\$", end: "\\W", excludeEnd: true },
+      {
+        className: "keyword",
+        begin: "[.]{2}",
+        end: "\\."
+      },
+      {
+        className: "meta",
+        begin: "@",
+        end: "\\W",
+        excludeEnd: true
+      }
+    ],
+    illegal: /([;<']|BEGIN)/
+  };
+}
+</script>
+        
+
+
+        <style>
+            .flexbox {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .flexitem {
+                margin: 5px;
+            }
+
+            .left {
+                margin: 10px 0 15px 20px;
+                text-align: left;
+                z-index: -10;
+                width: 25%;
+                font-size: 0.85em;
+                line-height: 1.5;
+            }
+
+            .right {
+                margin: 10px 0 15px 30px;
+                text-align: left;
+                z-index: -10;
+                width: 70%;
+                font-size: 0.85em;
+                line-height: 1.5;
+            }
+
+            .reveal section img {
+            border: none;
+            box-shadow: none;
+            background: none;
+            }
+
+            .reveal pre {
+                box-shadow: none;
+            }
+
+            .reveal pre code {
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            em.code {
+                display: block;
+                font-size: 0.8em;
+                text-align: left;
+                background: rgba(0,0,0,0.5);
+                width: calc(90% - 20px);
+                margin: 20px auto;
+                margin-bottom: -20px;
+                padding: 10px;
+                color: white;
+            }
+        </style>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                
+
+                <section>
+                    <div class="flexbox">
+                      <div class="left">
+                        <img src="david.jpeg" alt="" style="border-radius:50%;" />
+                      </div>
+                      <div class="right">
+                        <h3>David FAIN</h3>
+                        <h4>Software Engineer @ WeMaintain</h4>
+                      </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h1>The past</h1>
+                    <h5 style="margin-top: -1em">(summarized)</h5>
+                </section>
+
+                <section>
+                    <h2>REST issues</h2>
+                    <ol>
+                        <li>Ambiguity of endpoints</li>
+                        <li>Duplication of code</li>
+                        <li>Duplication of types</li>
+                        <li>Painful to iterate</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>The old way</h3>
+                    <img src="old.png" alt="old architecture">
+
+
+
+                    <aside class="notes">
+                        Sequelize Typescript + TSOA
+                        = routes.ts + swagger.json
+                        
+                        CI -> npm packages of angular services
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Still some issues...</h3>
+                    <ol>
+                        <li style="text-decoration: line-through;">Ambiguity of endpoints</li>
+                        <li style="text-decoration: line-through;">Duplication of code</li>
+                        <li>Duplication of types</li>
+                        <li>Painful to iterate</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h1>The present</h1>
+                    <h5 style="margin-top: -1em">(is glorious)</h5>
+                </section>
+
+                <section>
+                    <h2>GraphQL to the rescue</h2>
+                    <p>Solves all our problems, doesn't it ?</p>
+
+                    <div class="stillhere fragment" style="    transform: rotate(-7deg);
+                    margin: auto;
+                    width: 475px;
+                    margin-top: 50px;">
+                        <img src="https://media.giphy.com/media/l0ExuiqMllbZywd8s/giphy.gif" />
+                        <p style="margin-top: -260px;
+                        color: white;
+                        background: rgba(0,0,0,0.3);
+                        z-index: 2;
+                        position: relative;">3. Duplication of code</p>
+                    </div>
+
+
+                    <aside class="notes">
+
+                        Microservices/fédération vite f
+
+                        <li>Ambiguity of endpoints</li>
+                        <li>Duplication of types</li>
+                        <li>Painful to iterate</li>
+
+                        STEP:
+                        <li>Duplication of code</li>
+
+                        not front/back but SDL.
+                    </aside>
+                </section>
+
+                <section>
+                    <h2>TypeGraphQL</h2>
+                    <a href="https://typegraphql.ml/">https://typegraphql.ml/</a>
+<div class="flexbox fragment">
+    <pre class="flexitem">
+        <code>@ObjectType()
+@Entity()
+class Recipe {
+    @Field()
+    @Column()
+    title: string;
+
+    @Field(type => [Rate])
+    ratings: Rate[];
+
+    @Field({ nullable: true })
+    @Column()
+    averageRating?: number;
+}
+    </code>
+    </pre>
+    <div class="flexitem" style="width: 50%;display:flex; flex-direction: column; flex-wrap: wrap">
+<pre class="flexitem">
+<code>type Recipe {
+        title: String!
+        ratings: [Rate!]!
+        averageRating: Int
+    }
+</code>
+</pre>
+<pre class="sql">
+    <code>
+CREATE TABLE Recipe 
+    title varchar(255),
+    averageRating int
+</code>
+</pre>
+    </div>
+
+</div>
+<aside class="notes">
+    explain quickly, everyone knows that.
+    This is basically the entrypoint into a domain of software engineering with least friction.
+</aside>
+                </section>
+
+                <section>
+                    <h2>The Goals</h2>
+
+                    <ul>
+                        <li>Have a single source of truth when coding</li>
+                        <li>Reduce boilerplating/code duplication</li>
+                        <li>Have a typesafe way of doing everything</li>
+                    </ul>
+                </section>
+
+                <section id="permission">
+                    <section>
+                        <h2>Permissions</h2>
+
+<aside class="notes">
+    go down.
+</aside>
+                    </section>
+                    <section>
+                        <h3>The problem</h3>
+
+                        <pre>
+<code class="language-typescript" data-line-numbers="2|7,11|9|11">@Query()
+@Authorized("USER")
+public async recipes(
+    @Ctx() context: MyContext,
+    @Args filters: RecipeFilters
+) {
+    await recipePermissions.canQueryRecipes(context.user, filters)
+    
+    const recipes = await recipeService.getRecipes(filters)
+    
+    await recipePermissions.canSeeRecipes(context.user, recipes)
+
+    return recipes
+}
+</code>
+                        </pre>
+
+<aside class="notes">
+    TypeGraphQL gives us Authorized. But you might want more.
+
+    step
+
+    You might wanna check that THIS specific user can use those filters.
+    You might wanna check that the user is allowed to see those recipes.
+
+    why we need both
+
+    step
+
+    all you really want is to find recipes. and you don't really wanna have all the logic in one big fn
+
+    step 
+
+    note that this doesn't handle nested. Or when you have recipes from another entrypoint
+</aside>
+                    </section>
+
+
+                <section>
+                    <h3>Our solution</h3>
+
+                    <pre>
+<code>@Query()
+@Permission(() => CanQueryRecipes)
+@Authorized("USER")
+public async recipes(
+    @Args filters: RecipeFilters
+) {
+    return recipeService.getRecipes(filters)
+}
+</code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Our solution</h3>
+
+                    <pre>
+<code>
+export class CanSeeRecipe implements Permission {
+    public async resolve(
+        @Ctx() context: Context,
+        @Root() recipe: Partial<Recipe>
+    ) {
+        // Do some logic business Logic for the given 
+        // User & recipe
+    }
+}
+</code>
+                    </pre>
+                </section>
+
+                <section>
+                    <h3>Our solution</h3>
+
+                    <pre>
+<code>
+@Entity()
+@Permission(() => CanSeeRecipe)
+class Recipe {
+    @Field()
+    title: string;
+
+    @Field(type => [Rate])
+    ratings: Rate[];
+
+    @Field({ nullable: true })
+    @Permission(() => Or(IsOwnerOfRecipe, HasCommentedOnRecipe))
+    averageRating?: number;
+}
+</code>
+                    </pre>
+                </section>
+                </section>
+
+                <section id="pagination">
+                    <section>
+                        <h2>pagination</h2>
+                    </section>
+
+                    <section>
+                        <h2>The problem</h2>
+
+                        <H1 class="fragment">ALL THE BOILERPLATE</H1>
+                    </section>
+                    
+                    <section>
+                        <h3>Boilerplate land</h3>
+
+<pre>
+<code>input ConnectionArgs {
+    before: String
+    after: String
+    first: Int
+    last: Int
+}
+  
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+}
+
+type RecipesConnection {
+    pageInfo: PageInfo!
+    edges: [RecipeEdge!]!
+}
+
+type RecipeEdge {
+    node: Recipe!
+}
+
+type User {
+    recipes(pagination: ConnectionArgs): RecipesConnection
+}
+</code>
+</pre>
+                    </section>
+
+                    <section>
+                        <h3>Connecting two entities together</h3>
+<em class="code">user.entity.ts</em>
+<pre>
+<code>@Entity()
+@ObjectType()
+class User {
+    @RelayedConnection(() => Recipe)
+    @OneToMany(() => Recipe, recipe => recipe.user)
+    recipes: Recipe[]
+}
+</code>
+</pre>
+                    </section>
+                    <section>
+                        <h3>Usage with custom business logic</h3>
+    <em class="code">user.resolver.ts</em>
+    <pre>
+    <code class="language-typescript">@Resolver(() => User)
+class UserResolver {
+
+    @RelayedFieldResolver(() => Recipe)
+    public async recipes(
+        @RelayLimitOffset() { limit, offset }: RelayLimitOffsetArgs,
+        @Arg() filters: RecipeFilters
+    ) {
+        // Could be any business logic we want
+        const where = computeWhereFromFilters(filters)
+       
+        return User.findAndCount({ skip: offset, take: limit, where })
+    }
+
+}
+    </code>
+    </pre>
+
+                    </section>
+                </section>
+
+                <section id="grpc">
+
+                    <section>
+                        <h2>GRPC</h2>
+                    </section>
+
+                    <section>
+                        <h3>What's GRPC ?</h3>
+                        <img src="grpc.svg">
+
+                        <aside class="notes">
+                            They know this from previous prez
+                        </aside>
+                    </section>
+
+
+                    <section>
+                        <h3>Current gRPC implementation</h3>
+                        
+                        <ol>
+                            <li>Duplication of code</li>
+                            <li>Need to maintain a .proto file</li>
+                        </ol>
+
+                        <aside class="notes">
+                            They should have guessed this from previous prez
+                        </aside>
+                    </section>
+
+<section>
+<pre>
+<code>message GetCommentForRecipeRequest {
+    int32 recipeId = 1;
+}
+
+message GetCommentsForRecipeRequest {
+    int32 commentId = 1;
+    string text = 2;
+    int32 userId = 3;
+}
+
+service Recipe {
+    rpc GetCommentForRecipe (GetCommentForRecipeRequest) returns (GetCommentsForRecipeRequest);
+}
+</code>
+</pre>
+</section>
+
+                    <section>
+                        <h3>Our solution</h3>
+<em class="code">microservice-recipe/recipe.controller.ts</em>
+<pre>
+<code class="language-typescript">@Controller()
+class RecipeController {
+
+      @GrpcMethod(() => GetCommentForRecipeRequest)
+      public async getCommentForRecipe(
+        @Message(() => GetCommentForRecipeRequest)
+        { recipeId }: GetCommentForRecipeRequest,
+      ) {
+          // ... 
+      }
+
+}
+</code>
+</pre>
+                    </section>
+
+                    <section>
+                        <h3>The output</h3>
+<em class="code">microservice-recipe-public/grpc.client.ts</em>
+<pre>
+<code class="language-typescript">    export class Recipe {
+      public getCommentForRecipe(
+        data: GetCommentForRecipeRequest
+      ): Observable&lt;GetCommentForRecipeRequest> { }
+    }
+    
+    const RecipeProvider: Provider&lt;Recipe> = {
+      provide: Recipe,
+      useFactory: (GrpcClient: ClientGrpc) => {
+        return GrpcClient.getService&lt;Recipe>('Recipe')
+      },
+      inject: ['GrpcClient'],
+    }
+    
+    @Module({
+      exports: [Recipe],
+      providers: [RecipeProvider],
+    })
+    export class RecipeGrpcModule { }
+</code>
+</pre>
+                    </section>
+
+                </section>
+
+                <section id="sqs">
+                    <section>
+                        <h2>Async queues</h2>
+                    </section>
+
+                    <section>
+                        <h2>The Problem</h2>
+
+                        <p class="fragment">We use AWS...</p>
+                        <ul class="fragment">
+                            <li>Provisioning</li>
+                            <li>Typesafety</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Code first</h3>
+
+<pre>
+<code class="language-typescript">// microservice-recipe/controllers/recipe.controller.ts
+@Controller()
+class RecipeController {
+
+    @SQSQueue('create-recipe')
+    @QueueConsumer()
+    public async createRecipe(
+        @Arg() recipe: RecipeInput
+    ) {
+        await this.recipeService.createRecipe(recipe)
+    }
+
+}
+
+// microservice-recipe/recipe.module.ts
+@Module({
+    imports: [
+        SnsModule.forRootAsync(),
+    ],
+    controllers: [RecipeController]
+})
+class RecipeModule { }
+</code>
+</pre>
+                    </section>
+
+                    <section>
+                        <h3>Generated interfaces & services</h3>
+
+<em class="code">microservice-recipe-public/recipe.controller.d.ts</em>
+<pre>
+<code class="language-typescript">
+export class Recipe {
+    public async createRecipe(recipe: RecipeInput)
+}
+</code>
+</pre>
+                    </section>
+                </section>
+
+                <!--
+                    <section>
+                        <h1>The future</h1>
+                        <h5 style="margin-top: -1em">(when we get around to it)</h5>
+                    </section>
+    
+    
+                    <section>
+                        <h3>OpenSource</h3>
+                    </section>
+
+                    <section>
+                        <h3>Dataloaders</h3>
+                    </section>
+
+                    <section>
+                        <h3>Typescript reflection</h3>
+                    </section>
+                -->
+
+                <section>
+                    <h3>La minute de pub !</h3>
+                    <img src="https://realestech.eu/wp-content/uploads/2018/08/WeMaintain-logo-768x200.png" alt="" style="background: white; padding: 30px">
+                  </section>
+
+                <section>
+                    <h1>Questions ?</h1>
+                    <p>Retrouvez la démo et les slides sur <a href="https://github.com/wemaintain/codefirst">github.com/wemaintain/codefirst</a></p>
+                </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				hash: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/highlight/highlight.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+				]
+            });
+            Reveal.addEventListener( 'ready', function( event ) {
+                hljs.registerLanguage("graphql", hljsDefineGraphQL);
+            });
+		</script>
+	</body>
+</html>
